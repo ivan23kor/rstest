@@ -2,19 +2,24 @@ name: Update Head Docs
 
 on: [repository_dispatch, workflow_dispatch]
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    permissions:
+      contents: write
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
     - name: Install latest nightly
-      uses: actions-rs/toolchain@v1
+      uses: actions-rs/toolchain@16499b5e05bf2e26879000db0c1d13f7e13fa3af
       with:
         toolchain: nightly
     - name: Build Docs
-      uses: actions-rs/cargo@v1
+      uses: actions-rs/cargo@844f36862e911db73fe0815f00a4a2602c279505
       with: 
         command: doc
         toolchain: nightly
@@ -27,6 +32,6 @@ jobs:
         git config --local user.name "GitHub Action"
         git commit -m "Update docs" -a
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@881a6320fdb16eb5318c5054f31c218aec2b324c
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
